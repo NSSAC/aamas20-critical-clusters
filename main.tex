@@ -1,0 +1,223 @@
+%%
+%% sample document for AAMAS'19 conference
+%%
+%% modified from sample-sigconf.tex
+%%
+%% see ACM instructions acmguide.pdf
+%%
+%% AAMAS-specific questions? F.A.Oliehoek@tudelft.nl
+%%
+
+\documentclass[sigconf]{aamas}  % do not change this line!
+
+%% your usepackages here, for example:
+\usepackage{booktabs}
+
+\usepackage{amsthm}
+\usepackage{amsmath,amssymb,amsfonts,xpatch}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\newcommand{\expect}{\mathrm{Exp}}
+\newcommand{\hide}[1]{}
+%\newtheorem{theorem}{Theorem} % {\bfseries}{\itshape}
+\newtheorem{observation}{Observation} % {\bfseries}{\itshape}
+%\newtheorem{lemma}{Lemma}{\bfseries}{\itshape}
+\newtheorem{problem}{Problem}
+%\newtheorem{corollary}{Corollary}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\opt}{\mathrm{OPT}}
+\newcommand{\eopt}{E_{\mathrm{OPT}}}
+\newcommand{\edeg}{e_{\mathrm{deg}}}
+\newcommand{\prob}{\textsc{Spectral Radius Minimization}}
+\newcommand{\numinf}{\#\text{inf}}
+\newcommand{\kcsp}{k-\textsc{CSP}}
+\newcommand{\kcrp}{k-\textsc{CRP}}
+\newcommand{\infmax}{\textsc{IM}}
+\newcommand{\wt}{\text{wt}}
+\newcommand{\crit}{\text{crit}}
+\newcommand{\loc}{\text{loc}}
+\newcommand{\src}{\text{Src}}
+%\newcommand{\avgcrit}{\text{AvgCrit}}
+\newcommand{\avgcrit}{\text{ECrit}}
+\newcommand{\maxcrit}{\text{MaxCrit}}
+\newcommand{\algoavgcrit}{\textsc{ApproxECrit}}
+\newcommand{\algomaxcrit}{\textsc{ApproxMaxCrit}}
+\newcommand{\algosubmod}{\textsc{MaxSubmodConn}}
+\newcommand{\algomaxst}{$k$-\textsc{MaxST}}
+\newcommand{\greedy}{\textsc{Greedy}}
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\HR}{H_{\R}}
+\newcommand{\dist}{\texttt{dist}}
+\newcommand{\ConnR}{\text{Conn}(\mathcal{R})}
+\newcommand{\comp}{\text{comp}}
+\newcommand{\degr}{\mathrm{d}}
+\newcommand{\Vol}{\mathrm{Vol}}
+\newcommand{\wmax}{w_{\max}}
+\newcommand{\eps}{\epsilon}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\DeclareMathOperator*{\nodes}{nodes}
+\DeclareMathOperator*{\walks}{walks}
+\DeclareMathOperator*{\ct}{count}
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+
+
+
+%% do not change the following lines
+\usepackage{flushend}
+\setcopyright{ifaamas}  % do not change this line!
+\acmDOI{doi}  % do not change this line!
+\acmISBN{}  % do not change this line!
+\acmConference[AAMAS'20]{Proc.\@ of the 19th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2020), B.~An, N.~Yorke-Smith, A.~El~Fallah~Seghrouchni, G.~Sukthankar (eds.)}{May 2020}{Auckland, New Zealand}  % do not change this line!
+\acmYear{2020}  % do not change this line!
+\copyrightyear{2020}  % do not change this line!
+\acmPrice{}  % do not change this line!
+
+%% the rest of your preamble here
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{Finding Spatial Clusters Susceptible to Epidemic Outbreaks on a Social Contact Network}
+%\title{Finding Spatial Clusters Susceptible to Epidemic Outbreaks due to Undervaccination}  % put your title here!
+%\titlenote{Produces the permission block, and copyright information}
+
+% AAMAS: as appropriate, uncomment one subtitle line; check the CFP
+%\subtitle{Extended Abstract}
+%\subtitle{Blue Sky Ideas Track}
+%\subtitle{JAAMAS Track}
+%\subtitle{Demonstration}
+%\subtitle{Doctoral Consortium}
+
+% AAMAS: submissions are anonymous for most tracks
+\author{Paper \#XXX}  % put your paper number here!
+
+%% example of author block for camera ready version of accepted papers: don't use for anonymous submissions
+%
+%\author{Ben Trovato}
+%\authornote{Dr.~Trovato insisted his name be first.}
+%\orcid{1234-5678-9012}
+%\affiliation{%
+%  \institution{Institute for Clarity in Documentation}
+%  \streetaddress{P.O. Box 1212}
+%  \city{Dublin} 
+%  \state{Ohio} 
+%  \postcode{43017-6221}
+%}
+%\email{trovato@corporation.com}
+%
+%\author{G.K.M. Tobin}
+%\authornote{The secretary disavows any knowledge of this author's actions.}
+%\affiliation{%
+%  \institution{Institute for Clarity in Documentation}
+%  \streetaddress{P.O. Box 1212}
+%  \city{Dublin} 
+%  \state{Ohio} 
+%  \postcode{43017-6221}
+%}
+%\email{webmaster@marysville-ohio.com}
+%
+%\author{Lars Th{\o}rv{\"a}ld}
+%\authornote{This author is the
+%  one who did all the really hard work.}
+%\affiliation{%
+%  \institution{The Th{\o}rv{\"a}ld Group}
+%  \streetaddress{1 Th{\o}rv{\"a}ld Circle}
+%  \city{Hekla} 
+%  \country{Iceland}}
+%\email{larst@affiliation.org}
+%
+%\author{Valerie B\'eranger}
+%\affiliation{%
+%  \institution{Inria Paris-Rocquencourt}
+%  \city{Rocquencourt}
+%  \country{France}
+%}
+%\author{Aparna Patel} 
+%\affiliation{%
+% \institution{Rajiv Gandhi University}
+% \streetaddress{Rono-Hills}
+% \city{Doimukh} 
+% \state{Arunachal Pradesh}
+% \country{India}}
+%\author{Huifen Chan}
+%\affiliation{%
+%  \institution{Tsinghua University}
+%  \streetaddress{30 Shuangqing Rd}
+%  \city{Haidian Qu} 
+%  \state{Beijing Shi}
+%  \country{China}
+%}
+%
+%\author{Charles Palmer}
+%\affiliation{%
+%  \institution{Palmer Research Laboratories}
+%  \streetaddress{8600 Datapoint Drive}
+%  \city{San Antonio}
+%  \state{Texas} 
+%  \postcode{78229}}
+%\email{cpalmer@prl.com}
+%
+%\author{John Smith}
+%\affiliation{\institution{The Th{\o}rv{\"a}ld Group}}
+%\email{jsmith@affiliation.org}
+%
+%\author{Julius P.~Kumquat}
+%\affiliation{\institution{The Kumquat Consortium}}
+%\email{jpkumquat@consortium.net}
+%
+%% The example's default list of authors is too long for headers
+%\renewcommand{\shortauthors}{B. Trovato et al.}
+
+
+\begin{abstract}  % put your abstract here!
+The standard public health intervention for controlling the spread of highly contagious
+diseases like measles is vaccination at high rates.
+However, in some states in the United States, even though the
+average coverage is high, geographical clusters of undervaccinated
+populations are emerging.
+This raises the following fundamental questions: \emph{when do
+undervaccinated clusters pose significant risk (i.e., become critical) for the
+broader community?}  In particular, \emph{are all undervaccinated clusters
+equally critical, or are some more critical than others?}
+Given that public health resources are often limited, identifying and rank-ordering
+critical clusters can help prioritize and allocate scarce resources for surveillance and
+quick intervention.
+
+We quantify the criticality of a cluster as the additional number of infections caused if
+the cluster is underimmunized. This notion of criticality has not been studied before.
+We focus on finding clusters that maximize this measure, and develop efficient approximation algorithms for finding critical clusters
+by exploiting structural properties of the problem.
+Finally, we apply our methods to the state of Minnesota, where we find clusters
+with significantly higher criticality than those obtained by heuristics used in public health.
+\end{abstract}
+
+
+\keywords{AAMAS; ACM proceedings; \LaTeX; text tagging}  % put your semicolon-separated keywords here!
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% start of main body of paper
+
+\input{introduction}
+\input{preliminaries-small}
+\input{proposed-methods-small}
+\input{experiments-small}
+\input{related-work-small}
+\input{conclusions-small}
+
+\clearpage
+{\small
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{msmsort}
+}
+
+\clearpage
+\input{appendix}
+
+\end{document}

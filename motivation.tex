@@ -1,0 +1,71 @@
+% !TEX root = ./main.tex
+\section{Motivation from small world networks}
+\label{sec:motivation}
+
+\noindent
+%\textbf{Small world network.} 
+Consider the model of \cite{kleinberg+smallworld00}, in which a small world network $G=(V, E)$ is constructed
+in the following manner: we start with an $N\times N$ grid, where $N=\sqrt{n}$. Next, for each pair of nodes $u, v$, which are not adjacent on the grid,
+a ``long distance'' edge $(u, v)$ is added with probability $\frac{c}{d(u, v)^{\alpha}}$, where $c>0, \alpha\in(2, 3)$ are constants. The maximum degree of any node in $G$ is a constant, bounded by $D$.
+
+% The expected degree of each node $u$ is at most
+% \[
+% E[deg(u)]\leq \sum_{\ell=1}^{\sqrt{n}} c_1\ell\frac{c}{\ell^{\alpha}} = \sum_{\ell=1}^{\sqrt{n}} c_1 c \frac{1}{\ell^{\alpha-1}} =O(1),
+% \]
+% if $\alpha>2$.
+
+We assume the disease is highly contagious, so it spreads from an infected node to all unvaccinated neighbors. We consider two scenarios: (A) every node in $G$ is vaccinated with probability $\gamma$, and
+(B) there exists a spatial cluster $C$ in $G$, such that all nodes in $C$ are unvaccinated, and every node $v\not\in C$ is vaccinated with probability $\gamma$. There is a significant difference in the largest possible outbreak (from any initially infected node) in these two scenarios.
+
+
+\begin{lemma}
+\label{lemma:sw}
+Let scenarios (A) and (B) be as defined above, in a small world network $G$ with $\alpha\in(2, 3)$. If $\gamma > 1-\frac{1}{2D}$, the largest possible outbreak is $O(\log{n})$, with high probability. On the other hand, in scenario (B), for any given $\lambda\leq n^{\epsilon}$,
+
+Suppose $\mathbf{x}$ is a vaccination probability vector, in which each node $u$ is vaccination with probability
+$x_u=p_{vacc}$.
+For any given $\lambda=n^{\epsilon}$, there exists a spatial cluster $C$ such that if
+nodes in $C$ become unvaccinated, the outbreak size increases by a factor of $\Omega(\lambda|C|(1-p_{vacc}))$.
+\end{lemma}
+\begin{proof}
+\red{to be completed}
+
+\cite{Krivelevich2014ThePT}
+
+Let $C$ be a square in the center, with side $M=n^{\delta}$.
+Let $D$ be another square at the center with side $M+a$, containing $C$, where $a=n^{\epsilon}$.
+Then, the number of nodes in $D-C$ is at least $Ma$.
+
+Consider any node $v\in D-C$. We will show that the probability that $v$ is unvaccinated, and has a long distance edge
+to some node in $C$ is $\Omega(p_{unvacc}\frac{1}{a^{\alpha-2}})$. This implies that the expected number of nodes in $D-C$
+having connections to $C$ is $\Omega(p_{unvacc}\frac{Ma}{a^{\alpha-2}})=\Omega(p_{unvacc}Ma^{3-\alpha})$.
+\end{proof}
+
+Let $\mathbf{x}$ denote a vaccination probability vector, where $x_u$ is the probability that node $u$ is vaccinated---each vaccinated node can be removed from $G$, since it does not participate in disease transmission.
+Let $\numinf(\mathbf{x}, \src)$ be the expected number of infections
+for the intervention $\mathbf{x}$, when the initial infection is in a subset $\src$; here, we assume $\src$ consists of a single node. Then, $\max_{\src}\numinf(\mathbf{x},\src)$ denotes the maximum expected number of infections possible if there is a disease outbreak,
+---this corresponds to expected size of the largest component in $G$ if each node $u$ in $V$ is removed with probability $x_u$.
+Let $G[\mathbf{x}]$ denote a random graph obtained by deleting each node $u$ in $G$ with probability $x_u$.
+
+\begin{lemma}
+\label{lemma:sw}
+Suppose $\mathbf{x}$ is a vaccination probability vector, in which each node $u$ is vaccination with probability
+$x_u=p_{vacc}$.
+For any given $\lambda=n^{\epsilon}$, there exists a spatial cluster $C$ such that if
+nodes in $C$ become unvaccinated, the outbreak size increases by a factor of $\Omega(\lambda|C|(1-p_{vacc}))$.
+\end{lemma}
+\begin{proof}
+\red{to be completed}
+Let $C$ be a square in the center, with side $M=n^{\delta}$.
+Let $D$ be another square at the center with side $M+a$, containing $C$, where $a=n^{\epsilon}$.
+Then, the number of nodes in $D-C$ is at least $Ma$.
+
+Consider any node $v\in D-C$. We will show that the probability that $v$ is unvaccinated, and has a long distance edge
+to some node in $C$ is $\Omega(p_{unvacc}\frac{1}{a^{\alpha-2}})$. This implies that the expected number of nodes in $D-C$
+having connections to $C$ is $\Omega(p_{unvacc}\frac{Ma}{a^{\alpha-2}})=\Omega(p_{unvacc}Ma^{3-\alpha})$.
+\end{proof}
+
+%%%%%%%%%%
+
+\noindent
+\textbf{Implication.} Lemma \ref{lemma:sw} implies that if a ``large enough'' spatial cluster $C$ is unimmunized in a small-world network, it can lead to a super-linear (in the cluster size $|C|$) sized outbreak, scaled by $1-p_{vacc}$---this can be taken as a model of the risk potential of $C$ in causing an outbreak, if $C$ becomes unimmunized. In the small-world network model of \cite{kleinberg+smallworld00}, all spatial clusters of a given size are essentially the same. However, in a more general social network, not all clusters are the same, and this motivates our problem of finding the most critical clusters.
