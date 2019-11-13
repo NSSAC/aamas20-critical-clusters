@@ -39,21 +39,38 @@ Our contributions are summarized below.
 %\begin{enumerate}
 %\item 
 \noindent
-\textbf{1. Formalizing critical clusters.}
-We formalize the notion of \emph{criticality} in a population represented as a social contact network $G=(V, E)$, with a spatial embedding $\HR$ (defined later). The criticality of a subset $S$ of the population is defined as the \emph{expected number of additional infections} that would occur if the immunization rate within $S$ is low. We are interested in clusters $S$ that (1) are contiguous in space, with respect to the spatial embedding network $\HR$ and (2) have the maximum criticality. We refer to this optimization task as the $\maxcrit{}$ problem. 
+\textbf{1. Formalizing criticality.}
+Building on the intuition from \cite{metcalf:epidemics15}, we formalize the notion of \emph{criticality} of a subset
+$S\subseteq V$ in a social contact network $G=(V, E)$, as the \emph{expected number of additional infections} that would occur 
+if the immunization rate within $S$ is low. We estimate the criticalities of the clusters identified in \cite{cadena:vacc-cluster},
+and observe that criticality is not correlated with the level of under-vaccination.
+Extending this notion, we introduce the $\maxcrit{}$ problem: find a cluster $S$, which is
+(1) contiguous in space, with respect to a spatial embedding network $\HR$ associated with $G$, 
+and (2) has the maximum criticality.
 
-The spatial proximity is motivated by a public health response perspective, as in \cite{lieu2015geographic,atwell:pediatrics13,cadena:vacc-cluster}. Public health interventions involve intensive field work, and these interventions are most effective within a small region. This motivates the problem of finding a contiguous spatial cluster of bounded size with maximum criticality,
-which are the kinds of clusters reported in \cite{cadena:vacc-cluster}.
+The spatial proximity is motivated by the structure of clusters identified in 
+\cite{lieu2015geographic,atwell:pediatrics13,cadena:vacc-cluster}, which are small and connected---this is important
+from a public health response perspective, since interventions involve field work, which is most effective within a small region.
 
 %We formalize the notion of criticality in a social contact network $G=(V, E)$, which is associated with a spatial embedding, represented as a graph $\HR$ (defined formally later). The criticality of a subset $S$ is defined as the \emph{expected number of additional infections} that would occur if the immunization rate within $S$ is low. We are interested in clusters $S$ that 1) are contiguous in space and 2) have the maximum criticality---this is referred to as the \maxcrit{} problem. The spatial proximity is motivated by a public health response perspective, as in \cite{lieu2015geographic,atwell:pediatrics13}. Public health interventions involve intensive field work, which is another motivation for clusters corresponding to contiguous regions. Further, such response is most effective within a small region. This motivates the problem of finding a contiguous spatial cluster $S$ of bounded size with maximum criticality. Our contributions are as follows.
 
 
 \noindent
 \textbf{2. Rigorous algorithms for $\maxcrit{}$.}
-The $\maxcrit{}$ problem is computationally very challenging. We show that \maxcrit{} is NP-hard and design algorithm \algomaxcrit{}, which has a worst case approximation guarantee of $\Omega(1/k^{(d-1)/(2d-1)})$, relative to the optimum, for clusters of size $k$. Here, $d$ is related to the complexity of the spatial embedding network $\HR$, and it is a constant in practice. 
+The $\maxcrit{}$ problem is computationally very challenging. We show that \maxcrit{} is NP-hard and design algorithm \algomaxcrit{}, which has a worst case approximation guarantee of $\Omega(1/k^{(d-1)/(2d-1)})$, relative to the optimum, for clusters of size $k$. Here, $d$ is related to the complexity of the spatial embedding network $\HR$, and it is a constant in practice
+(e.g., it is 2 for a grid graph).
 
-We also show that the criticality function is submodular, which implies that $\maxcrit{}$ is equivalent to the classical Influence Maximization (\infmax) problem \cite{kempe:sigkdd03}, \emph{with an important constraint that the seed set is connected}. Due to this connectivity requirement, the standard greedy algorithms for \infmax{} yield poor results. %We also improve the running time significantly using a careful sampling technique.
-A corollary of our results is an $\Omega(1/k^{(d-1)/(2d-1)})$ approximation for maximizing any non-negative monotone submodular function over the set of connected subgraphs of size $k$ in a graph with doubling dimension $d$. For any $d\geq0$, we have $1/k^{(d-1)/(2d-1)}\geq 1/\sqrt{k}$, so our result improves the previous best $\Omega(1/\sqrt{k})$-approximation for submodular maximization with connectivity constraints \cite{kuo2015maximizing}.
+Our algorithm involves showing that the criticality function is submodular; this implies that the $\maxcrit{}$ is a special case
+of the problem of maximizing a non-negative monotone submodular function over the set of connected subgraphs of size $k$.
+The best prior result for this problem is a $\Omega(1/\sqrt{k})$-approximation by Kuo et al~\cite{kuo2015maximizing}.
+Since $1/k^{(d-1)/(2d-1)}\geq 1/\sqrt{k}$ for any $d\geq0$, our algorithm is the first improvement over the
+result of \cite{kuo2015maximizing} for submodular maximization with connectivity.
+
+We also show that $\maxcrit{}$ is equivalent to the classical problem of Influence Maximization (\infmax) \cite{kempe:sigkdd03},
+\emph{with an important constraint that the seed set is connected}. This variant of \infmax{} has not been studied before,
+and the only prior result is the $\Omega(1/\sqrt{k})$-approximation by applying \cite{kuo2015maximizing}.
+Thus, our work also gives an improved result for the \infmax{} problem with connectivity constraint.
+
 
 %Here, $d$ denotes the \emph{doubling dimension} of the associated spatial graph $\HR$ (defined later), and is a constant in practice, e.g., $2$ for a grid. We show that the \maxcrit{} objective is submodular, and this problem is equivalent to the classical Influence Maximization (\infmax) problem
 
