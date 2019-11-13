@@ -5,16 +5,24 @@ vaccination. Therefore, it is worrisome that large outbreaks of such diseases
 have occurred in recent years, such as the measles
 outbreaks in California in 2015 and in Minnesota in 2017---this is
 despite high vaccination coverage in the US, e.g., $\sim 95\%$ for MMR, the measles vaccine. 
-One of the reasons is the emergence of underimmunized geographical clusters \cite{lieu2015geographic}, often driven by misperceptions about 
+One of the reasons is the emergence of underimmunized geographical clusters, e.g., in California \cite{lieu2015geographic}
+and Minnesota \cite{cadena:vacc-cluster}, often driven by misperceptions about 
 side effects of vaccines \cite{atwell:pediatrics13}.  The typical response by public
-health agencies is to monitor such clusters where immunization rates are falling, run active information campaigns, and engage community leaders. However, such interventions are very expensive and time consuming, and therefore, not adequate for all possible clusters.
+health agencies is to monitor such clusters where immunization rates are falling, run active information campaigns, and engage community leaders. 
 
-In this paper, we hypothesize that \emph{not all undervaccinated clusters are equally ``critical'': different undervaccinated
-clusters can have significantly different potential in causing an
-outbreak}. The importance of this hypothesis is supported by \cite{metcalf:epidemics15},
-who state that \emph{``[t]here is also a need to understand under what conditions such clusters become at risk for epidemic spread, and the risk they pose to surrounding groups where vaccine coverage may be high.''} We develop a method to address this important public health policy question.
+Cadena et al. \cite{cadena:vacc-cluster} use public school immunization data and identify six clusters in Minnesota,
+which are statistically significant in terms of lower immunization rates, relative to the state wide level.
+Implementing public health interventions in all these clusters is very expensive and time consuming for
+public health agencies, which motivates the following problem: \textbf{\emph{which of these clusters (which are very different
+in terms of size, immunization rates, and demographics) pose the most risk, and should be prioritized for response.}}
+This is supported by Metcalf et al.~\cite{metcalf:epidemics15},
+who state that \emph{``[t]here is also a need to understand under what conditions such clusters become at 
+risk for epidemic spread, and the risk they pose to surrounding groups where vaccine coverage may be high.''} 
+Since immunization rates are falling, it is useful to consider not only clusters in which these rates
+are presently low, but also the clusters which would pose a risk if fewer people within them got vaccinated.
+We develop a method to address these important public health policy questions.
 Our contributions are summarized below.
-
+\smallskip
 
 
 
@@ -34,7 +42,9 @@ Our contributions are summarized below.
 \textbf{1. Formalizing critical clusters.}
 We formalize the notion of \emph{criticality} in a population represented as a social contact network $G=(V, E)$, with a spatial embedding $\HR$ (defined later). The criticality of a subset $S$ of the population is defined as the \emph{expected number of additional infections} that would occur if the immunization rate within $S$ is low. We are interested in clusters $S$ that (1) are contiguous in space, with respect to the spatial embedding network $\HR$ and (2) have the maximum criticality. We refer to this optimization task as the $\maxcrit{}$ problem. 
 
-The spatial proximity is motivated by a public health response perspective, as in \cite{lieu2015geographic,atwell:pediatrics13}. Public health interventions involve intensive field work, and these interventions are most effective within a small region. This motivates the problem of finding a contiguous spatial cluster of bounded size with maximum criticality.
+The spatial proximity is motivated by a public health response perspective, as in \cite{lieu2015geographic,atwell:pediatrics13,cadena:vacc-cluster}. Public health interventions involve intensive field work, and these interventions are most effective within a small region. This motivates the problem of finding a contiguous spatial cluster of bounded size with maximum criticality,
+which are the kinds of clusters reported in \cite{cadena:vacc-cluster}.
+
 %We formalize the notion of criticality in a social contact network $G=(V, E)$, which is associated with a spatial embedding, represented as a graph $\HR$ (defined formally later). The criticality of a subset $S$ is defined as the \emph{expected number of additional infections} that would occur if the immunization rate within $S$ is low. We are interested in clusters $S$ that 1) are contiguous in space and 2) have the maximum criticality---this is referred to as the \maxcrit{} problem. The spatial proximity is motivated by a public health response perspective, as in \cite{lieu2015geographic,atwell:pediatrics13}. Public health interventions involve intensive field work, which is another motivation for clusters corresponding to contiguous regions. Further, such response is most effective within a small region. This motivates the problem of finding a contiguous spatial cluster $S$ of bounded size with maximum criticality. Our contributions are as follows.
 
 
@@ -58,6 +68,11 @@ The critical clusters discovered using our algorithms (shown in Figure \ref{fig:
 have meaningful demographic properties
 from a public health perspective: they typically involve people with lower than average
 income and age (Section \ref{sec:experiments-cs}).
+We also compute the criticalities of the clusters reported in \cite{cadena:vacc-cluster}.
+Quite surprisingly, we find that: (1) the cluster with lowest vaccination rate among these is not the most critical, and
+(2) the cluster computed using our algorithm has criticality more than 10 times that of any of the clusters
+identified by \cite{cadena:vacc-cluster}.
+
 
 Finally, because of the lack of public outbreak data, there is no easy way to validate our results, but we note that \emph{one of the clusters we found to be critical lies in the Minneapolis metropolitan area where a large measles outbreak occurred in 2017 \cite{hall:mmwr17}}.
 
@@ -65,6 +80,8 @@ Finally, because of the lack of public outbreak data, there is no easy way to va
 \noindent
 \textbf{Social impact.}
 Our method for finding critical sets, applied to detailed population and contact network models (which are now standard approach in public health), provides an operational tool for public health agencies in prioritizing their limited surveillance and public outreach resources.
+Our results imply that from a public health perspective, it is important to address not just the current undervaccinated clusters
+identified in \cite{cadena:vacc-cluster}, but also make sure that the immunization rates in the critical clusters does not fall.
 
 
 
