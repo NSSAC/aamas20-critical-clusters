@@ -28,12 +28,16 @@ models developed by other public health groups. %\footnote{Models are available 
 Multiple such network models were evaluated in a study by the Institute of Medicine
 \cite{halloran:pnas08}.
 
-Here, we focus on a population for Minnesota with $5,048,920$ individuals in total, aggregated into 4,082 census block groups from the 2010 U.S. census. 
+Here, we focus on a population for Minnesota (MN) with $5,048,920$ individuals in total, aggregated into 4,082 census block groups from the 2010 U.S. census. 
 We consider an SEIR  stochastic model for measles, as described in
 Section \ref{sec:background}.
 The criticality of a region $R$ of block groups is assessed by leaving 
 every individual inside $R$ unvaccinated; everybody else in the population 
-is vaccinated with probability 0.97, which is the statewide vaccination rate. %The
+is vaccinated with probability 0.97, which is the statewide vaccination rate. 
+We also use the underimmunized clusters in MN computed by \cite{cadena:vacc-cluster}
+in our analysis here.
+
+%The
 %source $\src$ is as a set of three nodes in $\mathcal{C}$ selected uniformly at random.
 %For the \avgcrit{} formulation, we focus on the Minneapolis metropolitan area and
 %pick $\src$ to be a set of 100 children selected uniformly at random.
@@ -86,6 +90,25 @@ The motivation behind this heuristic is leaving as many people as possible unvac
 \item \textsc{Vulnerability.} The vulnerability of an individual is the probability that this person will get infected when the disease is left to propagate with no intervention---i.e., $x_v = 0$ for all nodes. This baseline finds a cluster of size $k$ with as large total vulnerability as possible, thus prioritizing individuals who are most likely to get infected. 
 \item \textsc{Random.} Find a connected cluster of size $k$ by doing a random walk on the auxiliary graph $\HR$.
 \end{enumerate}
+
+\subsection{Criticality of clusters identified in \cite{cadena:vacc-cluster}}
+\begin{figure}
+\centering
+\includegraphics[width=.35\textwidth]{img/criticality-schools-mn.pdf}
+\vspace{-.2in}
+\caption{Comparison of the distributions of the number of infections resulting from an
+outbreak starting in each of  four underimmunized clusters in MN identified in \cite{cadena:vacc-cluster}.}
+\label{fig:criticality-compare}
+\end{figure}
+
+We compute the criticality of the four most significant underimmunized clusters in MN, as identified in \cite{cadena:vacc-cluster}.
+The clusters are numbered 1--4 based on their significance, with respect to
+underimmunization rates, so that cluster 1 is more significant than cluster 4.
+However, as shown in Figure \ref{fig:criticality-compare},
+\emph{it seems clear that the outbreak-size of cluster 4 is much higher than
+that of cluster 1}---the 95th percentile value for the number of infections in
+cluster 4 is almost four times that of cluster 1.
+This implies criticality is not directly correlated with the level of underimmunization.
 
 \subsection{Optimization power}
 \label{sec:opt-power}

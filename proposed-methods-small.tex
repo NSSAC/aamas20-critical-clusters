@@ -11,20 +11,22 @@
 
 \subsection{Hardness of $k$-\maxcrit{}}
 
+\begin{theorem}
+\label{theorem:nphard}
+\emph{MaxCrit} is NP-hard.
+\end{theorem}
 
-\maxcrit{} is related to the classical Influence Maximization (IM) problem \cite{kempe:sigkdd03}. Briefly, in IM, we are given a directed graph, disease transmission probabilities for each edge, and a size constraint $k$. The goal is to find a \emph{seed set} of $k$ nodes to be the source of an infection, such that the number of infected nodes, following a given disease model, is maximized. \maxcrit{} may be seen as a generalization of IM with a connectivity constraint on the seed set. %Based on this relationship, we can derive the computational complexity of \maxcrit{}.
-Based on this relationship, one can show that \maxcrit{} is NP-hard, just as IM. However, as discussed below, the connectivity constraint makes our target problem algorithmically more challenging.
+We present the proof in the Supplementary Material. The main idea is to show that \maxcrit{} is equivalent to
+the classical Influence Maximization (\infmax) problem \cite{kempe:sigkdd03}. Briefly, in \infmax, we are given a directed graph, disease transmission probabilities for each edge, and a size constraint $k$. The goal is to find a \emph{seed set} of $k$ nodes to be the source of an infection, such that the number of infected nodes, following a given disease model, is maximized. 
+While \maxcrit{} has a different objective, we show that it can be viewed as \infmax{} not on $G$ but as an expectation on
+different graph in which all vaccinated nodes are removed with the corresponding probability,
+and a meta-node is added to ensure connectivity.
 
-%\begin{theorem}
-%\label{theorem:nphard}
-%\emph{MaxCrit} is NP-hard.
-%\end{theorem}
-%\begin{proof}
-%By reduction from Influence Maximization (Supplementary Material).
-%\end{proof}
 
-\subsection{Impact of connectivity requirement}
-Though \maxcrit{} is closely related to IM, we cannot directly apply the current methods for IM. This is because the connectivity constraint has a strong effect on the solution of \maxcrit{}. A solution computed for \infmax{} using the greedy algorithm of \cite{kempe:sigkdd03} can be arbitrarily suboptimal for \maxcrit{}. Informally, this follows because, in \infmax{}, it is better to choose seeds that are far apart and disconnected, so that their combined number of infections is maximized.
+\subsection{Poor performance of \infmax{} solutions}
+
+Though \maxcrit{} is closely related to \infmax, we cannot directly apply the current methods for 
+\infmax{}. This is because the connectivity constraint has a strong effect on the solution of \maxcrit{}. A solution computed for \infmax{} using the greedy algorithm of \cite{kempe:sigkdd03} can be arbitrarily suboptimal for \maxcrit{}. Informally, this follows because, in \infmax{}, it is better to choose seeds that are far apart and disconnected, so that their combined number of infections is maximized.
 
 \begin{observation}
 \label{obs:infmax}
@@ -205,6 +207,7 @@ Finally, we have
 
 \subsection{Quota Steiner Tree problem}
 \label{sec:algomaxst}
+\red{this is actually budgeted steiner tree}
 We also use a variation of steiner tree, referred to as Quota Steiner Tree (\textsc{QST}), as a subroutine in our algorithm. This problem is defined in the following manner \cite{Johnson2000PCS}:
 given a graph $H_{\R}$, a weight $\wt_r$ for each $r\in \R$, and a parameter $k$, find a tree $T'$ in $H_{\R}$ with at most $k$ nodes, such that $\sum_{r\in T'} \wt_r$ is maximized.
 
