@@ -7,9 +7,11 @@
 %We also prove structural properties of these objectives, later used in our algorithms.
 
 
-\section{Complexity and difference from the \infmax{} problem}
+\section{Computational challenges}
 
 \subsection{Hardness of $k$-\maxcrit{}}
+
+
 \maxcrit{} is related to the classical Influence Maximization (IM) problem \cite{kempe:sigkdd03}. Briefly, in IM, we are given a directed graph, disease transmission probabilities for each edge, and a size constraint $k$. The goal is to find a \emph{seed set} of $k$ nodes to be the source of an infection, such that the number of infected nodes, following a given disease model, is maximized. \maxcrit{} may be seen as a generalization of IM with a connectivity constraint on the seed set. %Based on this relationship, we can derive the computational complexity of \maxcrit{}.
 Based on this relationship, one can show that \maxcrit{} is NP-hard, just as IM. However, as discussed below, the connectivity constraint makes our target problem algorithmically more challenging.
 
