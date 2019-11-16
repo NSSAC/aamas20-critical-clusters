@@ -12,7 +12,10 @@ Our experiments focus on the following questions:
 \end{enumerate}
 
 \subsection{Solution quality compared to IM baseline}
-We compare our proposed algorithm, \algomaxcrit{}, to the \textsc{Greedy} algorithm with the following modification: let $S_{i-1}$ be the solution set at the beginning of iteration $i$, for $1 < i \leq k$. At iteration $i$, we will add a node $x$ from $V\setminus S_{i-1}$ to the solution set, such that $x$ has maximal marginal gain \emph{and} $x$ is a neighbor of some node in $S_{i-1}$, thus respecting the connectivity constraint.
+Since no baselines exist for \maxcrit{}, and it is closely related to \infmax{}, 
+we compare \algomaxcrit{} to a baseline  \textsc{ConnectedGreedy}, which is an adaptation of the \textsc{Greedy}
+algorithm for \infmax{}:
+let $S_{i-1}$ be the solution set at the beginning of iteration $i$, for $1 < i \leq k$. At iteration $i$, we will add a node $x$ from $V\setminus S_{i-1}$ to the solution set, such that $x$ has maximal marginal gain \emph{and} $x$ is a neighbor of some node in $S_{i-1}$, thus respecting the connectivity constraint.
 
 We perform the evaluation on four datasets summarized in Table \ref{table:datasets}. ``Minnesota'' and ``US Power Grid'' are a spatial and infrastructure network, respectively, with low-dimensional embedding. ``Arxiv GrQC'' and ``Facebook'' are a collaboration and social network, respectively, commonly used when evaluating IM algorithms.
 
@@ -38,7 +41,7 @@ Facebook  & Social network & 4,039 & 88,234\\
 \end{tabular}
 \end{table}
 
-In Figure \ref{fig:compare-greedy}, we show the influence---i.e., the objective score in IM---of \textsc{Greedy} and \algomaxcrit{} for various values of $k$. We observe that \algomaxcrit{} has better performance than \textsc{Greedy} in ``Minnesota'' and ``US Power Grid'', and the gap between the two algorithm widens as $k$ increases. Interestingly, there is no noticeable difference in performance in ``Arxiv GrQC'', and our algorithm finds solutions of only slightly higher quality in Facebook. We find this result to be reasonable, since networks with low-dimensional embedding are more likely to benefit from our methods.
+In Figure \ref{fig:compare-greedy}, we show the influence---i.e., the objective score in IM---of \textsc{ConnectedGreedy} and \algomaxcrit{} for various values of $k$. We observe that \algomaxcrit{} has better performance than \textsc{ConnectedGreedy} in ``Minnesota'' and ``US Power Grid'', and the gap between the two algorithm widens as $k$ increases. Interestingly, there is no noticeable difference in performance in ``Arxiv GrQC'', and our algorithm finds solutions of only slightly higher quality in Facebook. We find this result to be reasonable, since networks with low-dimensional embedding are more likely to benefit from our methods.
 
 \begin{figure*}
 \centering
@@ -46,7 +49,7 @@ In Figure \ref{fig:compare-greedy}, we show the influence---i.e., the objective 
 \includegraphics[width=0.24\textwidth]{img/baseline-USpowergrid.pdf}
 \includegraphics[width=0.24\textwidth]{img/baseline-ca-GrQC.pdf}
 \includegraphics[width=0.24\textwidth]{img/baseline-facebook.pdf}\\
-\caption{Comparison to \textsc{Greedy} algorithm}
+\caption{Comparison to \textsc{ConnectedGreedy} algorithm}
 \label{fig:compare-greedy}
 \end{figure*}
 
