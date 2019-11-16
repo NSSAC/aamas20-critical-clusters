@@ -1,14 +1,51 @@
 % !TEX root = ./main.tex
 \section{Experimental results}
 \label{sec:experiments-cs}
+We first show empirically that a simple extension of the \textsc{Greedy} algorithm for IM quickly loses performance in the variant of the problem with connectivity. Even though IM is not the focus of our work, this comparison illustrates the need for more 
+
 Our experiments focus on the following questions:
 \begin{enumerate}
+\item \textbf{Effect of connectivity constraint.} How does our algorithm compare to the standard \textsc{Greedy} algorithm for Influence Maximization? (Section \ref{sec:compare-to-greedy})
 \item \textbf{Finding critical clusters.} Can we find highly critical regions with our proposed methods? How do they compare to standard baselines used in public health? (Section \ref{sec:opt-power})
 \item \textbf{Characteristics of critical clusters.} What are the demographic properties of critical clusters? Where are they located? (Section \ref{sec:demographics})
 %\item \textbf{\maxcrit{} vs.\ \avgcrit{}.} What are the differences and similarities of the clusters discovered under the two proposed problems? (Section \ref{sec:compare-formulations})
 \end{enumerate}
 
-\subsection{Experimental Setup}
+\subsection{Solution quality compared to \textsc{Greedy}}
+As discussed in Section \ref{sec:computational-challenges}, current methods for the standard IM problem are inadequate when we require a connected solution. Here, we compare our proposed algorithm, \algomaxcrit{}
+
+\label{sec:compare-to-greedy}
+\begin{table}[ht]
+\centering \caption{Datasets used in our experiments}
+\label{table:datasets}
+\begin{tabular}{|l|l|r|r|}
+\hline
+Minnesota  & Minnesota census & 4,082 & 12,659 \\
+& block groups & & \\
+\hline
+\textbf{Dataset}  & \textbf{Description} & \textbf{Nodes} & \textbf{Edges} \\
+\hline
+US Power Grid & Power grid of Western  & 	4,941 & 6,594\\
+& states in USA & & \\
+\hline
+Arxiv GrQC & Collaboration network & 5,242 & 14,496 \\
+\hline
+Facebook  & Social network & 4,039 & 88,234\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure*}
+\centering
+\includegraphics[width=0.24\textwidth]{img/baseline-mn-blkgrp.pdf}
+\includegraphics[width=0.24\textwidth]{img/baseline-USpowergrid.pdf}
+\includegraphics[width=0.24\textwidth]{img/baseline-ca-GrQC.pdf}
+\includegraphics[width=0.24\textwidth]{img/baseline-facebook.pdf}\\
+\caption{Comparison to \textsc{Greedy} algorithm}
+\label{fig:compare-greedy}
+\end{figure*}
+
+\subsection{Application to Minnesota}
 \subsubsection{Dataset and disease model.}
 \label{sec:data}
 A study of epidemics that spread through physical proximity requires social contact networks in which an edge represents physical contact
@@ -17,7 +54,7 @@ This has been recognized as a significant challenge in the public health communi
 and multiple methods have been developed to construct realistic contact
 network models by integrating diverse public datasets
 (e.g., US Census, land use, and activity surveys) and
-commercial data (e.g., from Dunn \& BradStreet on location profiles).
+commercial data (e.g., from Dun \& BradStreet on location profiles).
 We use models developed by the approach of 
 \cite{eubank:nature04}; %\footnote{See \url{ndssl.vbi.vt.edu/synthetic-data/download}
 %for networks available for download.}
@@ -91,7 +128,7 @@ The motivation behind this heuristic is leaving as many people as possible unvac
 \item \textsc{Random.} Find a connected cluster of size $k$ by doing a random walk on the auxiliary graph $\HR$.
 \end{enumerate}
 
-\subsection{Criticality of clusters identified in \cite{cadena:vacc-cluster}}
+\subsection{Relation between criticality and underimmunization}
 \begin{figure}
 \centering
 \includegraphics[width=.35\textwidth]{img/criticality-schools-mn.pdf}
@@ -101,14 +138,15 @@ outbreak starting in each of  four underimmunized clusters in MN identified in \
 \label{fig:criticality-compare}
 \end{figure}
 
-We compute the criticality of the four most significant underimmunized clusters in MN, as identified in \cite{cadena:vacc-cluster}.
+We compute the criticality of the four most significant underimmunized clusters in MN, as identified by authors in \cite{cadena:vacc-cluster}.
 The clusters are numbered 1--4 based on their significance, with respect to
 underimmunization rates, so that cluster 1 is more significant than cluster 4.
 However, as shown in Figure \ref{fig:criticality-compare},
 \emph{it seems clear that the outbreak-size of cluster 4 is much higher than
 that of cluster 1}---the 95th percentile value for the number of infections in
-cluster 4 is almost four times that of cluster 1.
-This implies criticality is not directly correlated with the level of underimmunization.
+cluster 4 is almost four times that of cluster 1. The results show that criticality is not directly 
+correlated with the level of underimmunization, or even vulnerability, as shown in Figure~\ref{fig:cri-baseline-compare}. Instead network structure plays a more important role in determining 
+the criticality. 
 
 \subsection{Optimization power}
 \label{sec:opt-power}

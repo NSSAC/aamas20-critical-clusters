@@ -8,6 +8,7 @@
 
 
 \section{Computational challenges}
+\label{sec:computational-challenges}
 
 \subsection{Hardness of $k$-\maxcrit{}}
 
@@ -18,9 +19,9 @@
 
 We present the proof in the Supplementary Material. The main idea is to show that \maxcrit{} is equivalent to
 the classical Influence Maximization (\infmax) problem \cite{kempe:sigkdd03}. Briefly, in \infmax, we are given a directed graph, disease transmission probabilities for each edge, and a size constraint $k$. The goal is to find a \emph{seed set} of $k$ nodes to be the source of an infection, such that the number of infected nodes, following a given disease model, is maximized. 
-While \maxcrit{} has a different objective, we show that it can be viewed as \infmax{} not on $G$ but as an expectation on
+While \maxcrit{} has a different objective, we show that it can be viewed as \infmax{} not on $G$ but as an expectation on a
 different graph in which all vaccinated nodes are removed with the corresponding probability,
-and a meta-node is added to ensure connectivity.
+and a meta-node is added to ensure connectivity. 
 
 
 \subsection{Poor performance of \infmax{} solutions}
@@ -99,9 +100,41 @@ where $\text{Pr}(L)$ denotes the probability of obtaining the live graph $L$ wit
 \end{proof}
 
 The \maxcrit{} problem can be seen as maximizing the submodular function $\crit(S)$ over all connected $S\in\ConnR$, with $|S|\leq k$. The connectivity constraint significantly increases the computational complexity of the problem. In contrast, the relaxed problem of maximizing a submodular function subject \emph{only} to a size constraint $k$ can be approximated to a constant factor. Given a submodular function $f(\cdot)$, the $\greedy{}$ algorithm of \cite{nemhauser1978analysis} finds a set $S$ with objective value at least $(1 - 1/e)$ of the optimal by iteratively adding a node $v$ to $S$ that maximizes the marginal benefit, $f(S\cup\{v\}) - f(S)$.
-For submodular maximization with connectivity constraints, \cite{kuo2015maximizing} give an $\Omega(1/\sqrt{k})$ approximation guarantee. Below, we derive an improved algorithm by exploiting the geometric structure of the graph.
+For submodular maximization with connectivity constraints, Kuo et al.\ \cite{kuo2015maximizing} give an $\Omega(1/\sqrt{k})$ approximation guarantee. Below, we derive an improved algorithm by exploiting the geometric structure of the graph.
 
 \subsection{Algorithm \algosubmod{}}
+%We now have the tools to design \algosubmod{} (Algorithm \ref{alg:algosubmod}) for the $\maxcrit{}$ problem. As in \cite{kuo2015maximizing}, the main idea is to first solve the relaxed problem where we ignore the connectivity constraint (line 2), and then make the solution connected via a steiner tree (line 3). By combining Lemmas \ref{lemma:udg} and \ref{lemma:opt}, we obtain an improved approximation.
+We present our algorithm for the for the $\maxcrit{}$ problem in Algorithm \ref{alg:algosubmod}. As in \cite{kuo2015maximizing}, the main idea is to first solve the relaxed problem where we ignore the connectivity constraint (line 3), and then make the solution connected via a steiner tree (line 4). Below, we show that \algosubmod{} has an approximation guarantee of $\Omega(1 / k{(d - 1}{(d-2})$ for a graph with doubling dimension $d$.
+
+\begin{algorithm}{}
+\caption{\small $\algosubmod(H_{\R}, k, d)$}
+\label{alg:algosubmod}
+\begin{algorithmic}[1]
+\begin{small}
+\STATE Let $\ell = k^{\frac{d}{2d -1}}$
+\FOR{$r \in H_{\R}$}
+  \STATE 
+%Run the $\greedy{}$ algorithm of \cite{nemhauser1978analysis}
+%to pick a subset $S\subseteq B(r, \ell)$ of size $\ell$
+Run $\greedy(B(r, \ell), \crit, \ell)$ to get subset $S\subseteq B(r, \ell)$ of size $\ell$
+  \STATE Construct a minimum steiner tree $T(r, \ell)$ of $S$ in graph $\HR$
+\ENDFOR
+\STATE return $\mbox{argmax}_{r} \{\crit(T(r, \ell))\}$
+\STATE
+\STATE\textbf{procedure} $\greedy(V, f, k)$ \cite{nemhauser1978analysis}
+%\STATE \textbf{Input}: Ground set $V$, submodular function $f$, and size parameter $k$
+%\STATE \textbf{Output}: Set $S$ of size $k$, with objective value $f(S)$ at least $(1 - 1/e)$ of the optimal
+\STATE Let $S = \emptyset$
+\FOR{$i = 1$ to $k$}
+\STATE $x = \mbox{argmax}_{x' \in V\setminus S} f(S \cup \{x'\}) - f(S)$
+\STATE $S = S \cup \{x\}$
+\ENDFOR
+\STATE return $S$
+\end{small}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Theoretical analysis}
 Recall the definitions of $B(v, \ell)$, $\dist(u, v)$, and the doubling dimension $d$. For subsets $S\subseteq T \subseteq \R$, we say that $T$ is a steiner tree spanning $S$ if the nodes in $T$---and, consequently, $S$---are connected in $\HR$. The following lemma shows that, if the nodes in a set $S$ are within some bounded distance, we can find a steiner tree spanning $S$ that is not ``too large''.
 
 \begin{lemma}
@@ -151,35 +184,8 @@ $$
 % some $D(r, s)\in \hat{S}$ such that $f(S^*\cap D(r, s))\geq \frac{1}{k^{1/3}} f(S^*)$.
 % \end{proof}
 
-We now have the tools to design \algosubmod{} (Algorithm \ref{alg:algosubmod}) for the $\maxcrit{}$ problem. As in \cite{kuo2015maximizing}, the main idea is to first solve the relaxed problem where we ignore the connectivity constraint (line 2), and then make the solution connected via a steiner tree (line 3). By combining Lemmas \ref{lemma:udg} and \ref{lemma:opt}, we obtain an improved approximation.
-
-\begin{algorithm}{}
-\caption{\small $\algosubmod(H_{\R}, k, \ell)$}
-\label{alg:algosubmod}
-\begin{algorithmic}[1]
-\begin{small}
-\FOR{$r \in H_{\R}$}
-  \STATE 
-%Run the $\greedy{}$ algorithm of \cite{nemhauser1978analysis}
-%to pick a subset $S\subseteq B(r, \ell)$ of size $\ell$
-Run $\greedy(B(r, \ell), \crit, \ell)$ to get subset $S\subseteq B(r, \ell)$ of size $\ell$
-  \STATE Construct a minimum steiner tree $T(r, \ell)$ of $S$ in graph $\HR$
-\ENDFOR
-\STATE return $\mbox{argmax}_{r} \{\crit(T(r, \ell))\}$
-\STATE
-\STATE\textbf{procedure} $\greedy(V, f, k)$ \cite{nemhauser1978analysis}
-%\STATE \textbf{Input}: Ground set $V$, submodular function $f$, and size parameter $k$
-%\STATE \textbf{Output}: Set $S$ of size $k$, with objective value $f(S)$ at least $(1 - 1/e)$ of the optimal
-\STATE Let $S = \emptyset$
-\FOR{$i = 1$ to $k$}
-\STATE $x = \mbox{argmax}_{x' \in V\setminus S} f(S \cup \{x'\}) - f(S)$
-\STATE $S = S \cup \{x\}$
-\ENDFOR
-\STATE return $S$
-\end{small}
-\end{algorithmic}
-\end{algorithm}
-
+\noindent
+\textbf{Approximation guarantee.} By combining Lemmas \ref{lemma:udg} and \ref{lemma:opt}, we obtain an improved approximation.
 \begin{theorem}
 \label{theorem:submod}
 Let $T(r, \ell)$ be the tree returned by Algorithm \algosubmod{}, and let $\HR$ have doubling dimension $d$. Then, for $\ell=k^{\frac{d}{2d-1}}$, $\crit(T(r, \ell))=\Omega\Big(\frac{1}{k^{(d-1)/(2d-1)}} \crit(S^*)\Big)$ and $T(r, \ell)$ has size at most $2k$.
@@ -205,15 +211,14 @@ Finally, we have
 \textbf{Improvement over the best-known bound of \cite{kuo2015maximizing}.} We note that, for any $d> 0$, we have $1/k^{(d-1)/(2d-1)}\geq 1/\sqrt{k}$. Since any graph has finite doubling dimension, Algorithm \algosubmod{} improves the current best bound for submodular maximization with connectivity constraints.
 
 
-\subsection{Quota Steiner Tree problem}
+\subsection{Budgeted Steiner Tree problem}
 \label{sec:algomaxst}
-\red{this is actually budgeted steiner tree}
-We also use a variation of steiner tree, referred to as Quota Steiner Tree (\textsc{QST}), as a subroutine in our algorithm. This problem is defined in the following manner \cite{Johnson2000PCS}:
+%\red{this is actually budgeted steiner tree}
+We also use a variation of steiner tree, referred to as Budgeted Steiner Tree (\textsc{BST}), as a subroutine in our algorithm. This problem is defined in the following manner \cite{Johnson2000PCS}:
 given a graph $H_{\R}$, a weight $\wt_r$ for each $r\in \R$, and a parameter $k$, find a tree $T'$ in $H_{\R}$ with at most $k$ nodes, such that $\sum_{r\in T'} \wt_r$ is maximized.
 
-
-In fact, \textsc{QST} is a special, easier instance of the above problem of submodular maximization with connectivity constraints, since $\sum_{r\in T'} \wt_r$ is a modular function.
-There are constant factor approximations for QST \cite{ravi1996spanning}. Here, we adapt the randomized fixed-parameter tractable algorithm of \cite{cadena:sdm17}, which yields an optimal solution for \textsc{QST}  with high probability in time $O(|E|(2e)^k)$, which is a fixed parameter tractable algorithm in $k$. We refer to this algorithm as \algomaxst{}, and we find that integrating it as a subroutine in Algorithm \ref{alg:algosubmod} improves optimization power in practice.
+In fact, \textsc{BST} is a special, easier instance of the above problem of submodular maximization with connectivity constraints, since $\sum_{r\in T'} \wt_r$ is a modular function.
+There are constant factor approximations for BST \cite{ravi1996spanning}. Here, we adapt the randomized fixed-parameter tractable algorithm of \cite{cadena:sdm17}, which yields an optimal solution for \textsc{BST} with high probability in time $O(|E|(2e)^k)$, which is a fixed parameter tractable algorithm in $k$. We refer to this algorithm as \algomaxst{}, and we find that integrating it as a subroutine in Algorithm \ref{alg:algosubmod} improves optimization power in practice.
 
 \subsubsection{Algorithm \algomaxcrit{}}
 \begin{algorithm}{}
