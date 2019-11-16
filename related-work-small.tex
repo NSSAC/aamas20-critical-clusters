@@ -16,7 +16,8 @@ question of identifying \emph{critical} clusters, which is our focus.
 
 There is a large body of work related to outbreak detection in networks. \cite{christakis:10:sensor} use the ``friend of random people'' effect to monitor a subset of people and infer characteristics of the  epidemic curve for the entire population. \cite{Leskovec@KDD07} study early detection of different kinds of events---e.g., in water networks or social networks. However, these approaches have been focused on either just detecting that some event (e.g., start of an infection) has occurred or the epidemic characteristics for the entire region. Instead, we are interested in finding regions that would lead to a big number of infections if left unvaccinated.
 
-Our work is also related to influence maximization \cite{kempe:sigkdd03}, and more generally, submodular function maximization, but with a constraint of connectivity. Connectivity makes the problem much more difficult than other constraints, such as cardinality or matroid constraints, which can be approximately optimized using a simple greedy procedure \cite{nemhauser1978analysis}. 
+Our work is also related to influence maximization \cite{kempe:sigkdd03}, and more generally, 
+submodular function maximization \cite{Krause2014SubmodularFM}, but with a constraint of connectivity. Connectivity makes the problem much more difficult than other constraints, such as cardinality or matroid constraints, which can be approximately optimized using a simple greedy procedure \cite{nemhauser1978analysis}. 
 The most relevant work is by \cite{kuo2015maximizing}, who proposed a 
 $\Omega(1/\sqrt{k})$ approximation algorithm to this problem. As mentioned earlier, our algorithm \algosubmod{} improves on this bound. Finally,
 \cite{krause2006near} proposes an approximation algorithm for budgeted 
