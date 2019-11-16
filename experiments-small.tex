@@ -1,31 +1,34 @@
 % !TEX root = ./main.tex
 \section{Experimental results}
 \label{sec:experiments-cs}
-We first show empirically that a simple extension of the \textsc{Greedy} algorithm for IM quickly loses performance in the variant of the problem with connectivity. Even though IM is not the focus of our work, this comparison illustrates the need for algorithms that take the connectivity constraint into account. Then, we evaluate our algorithm on the task of discovering critical clusters in 
+We first show empirically that a simple extension to the algorithm for IM quickly loses performance in the variant of the problem with connectivity. Even though IM is \textbf{not} the focus of our work, this comparison illustrates the need for algorithms that take the connectivity constraint into account, in particular for spatial applications. Then, we evaluate our algorithm on the task of discovering critical clusters on a detailed population model for the state of Minnesota.
 
 Our experiments focus on the following questions:
 \begin{enumerate}
-\item \textbf{Effect of connectivity constraint.} How does our algorithm compare to the standard \textsc{Greedy} algorithm for Influence Maximization? (Section \ref{sec:compare-to-greedy})
+\item \textbf{Effect of connectivity constraint.} How does our algorithm compare to the standard algorithm for Influence Maximization? (Section \ref{sec:compare-to-greedy})
 \item \textbf{Finding critical clusters.} Can we find highly critical regions with our proposed methods? How do they compare to standard baselines used in public health? (Section \ref{sec:opt-power})
 \item \textbf{Characteristics of critical clusters.} What are the demographic properties of critical clusters? Where are they located? (Section \ref{sec:demographics})
 %\item \textbf{\maxcrit{} vs.\ \avgcrit{}.} What are the differences and similarities of the clusters discovered under the two proposed problems? (Section \ref{sec:compare-formulations})
 \end{enumerate}
 
-\subsection{Solution quality compared to \textsc{Greedy}}
-As discussed in Section \ref{sec:computational-challenges}, current methods for the standard IM problem are inadequate when we require a connected solution. Here, we compare our proposed algorithm, \algomaxcrit{}
+\subsection{Solution quality compared to IM baseline}
+We compare our proposed algorithm, \algomaxcrit{}, to the \textsc{Greedy} algorithm with the following modification: let $S_{i-1}$ be the solution set at the beginning of iteration $i$, for $1 < i \leq k$. At iteration $i$, we will add a node $x$ from $V\setminus S_{i-1}$ to the solution set, such that $x$ has maximal marginal gain \emph{and} $x$ is a neighbor of some node in $S_{i-1}$, thus respecting the connectivity constraint.
+
+We perform the evaluation on four datasets summarized in Table \ref{table:datasets}. ``Minnesota'' and ``US Power Grid'' are a spatial and infrastructure network, respectively, with low-dimensional embedding. ``Arxiv GrQC'' and ``Facebook'' are a collaboration and social network, respectively, commonly used when evaluating IM algorithms.
 
 \label{sec:compare-to-greedy}
 \begin{table}[ht]
-\centering \caption{Datasets used in our experiments}
+\centering \caption{Data summary}
 \label{table:datasets}
+\vspace{-.15in}
 \begin{tabular}{|l|l|r|r|}
+\hline
+\textbf{Dataset}  & \textbf{Description} & \textbf{Nodes} & \textbf{Edges} \\
 \hline
 Minnesota  & Minnesota census & 4,082 & 12,659 \\
 & block groups & & \\
 \hline
-\textbf{Dataset}  & \textbf{Description} & \textbf{Nodes} & \textbf{Edges} \\
-\hline
-US Power Grid & Power grid of Western  & 	4,941 & 6,594\\
+US Power Grid & Power grid of Western  & 4,941 & 6,594\\
 & states in USA & & \\
 \hline
 Arxiv GrQC & Collaboration network & 5,242 & 14,496 \\
@@ -34,6 +37,8 @@ Facebook  & Social network & 4,039 & 88,234\\
 \hline
 \end{tabular}
 \end{table}
+
+In Figure \ref{fig:compare-greedy}, we show the influence---i.e., the objective score in IM---of \textsc{Greedy} and \algomaxcrit{} for various values of $k$. We observe that \algomaxcrit{} has better performance than \textsc{Greedy} in ``Minnesota'' and ``US Power Grid'', and the gap between the two algorithm widens as $k$ increases. Interestingly, there is no noticeable difference in performance in ``Arxiv GrQC'', and our algorithm finds solutions of only slightly higher quality in Facebook. We find this result to be reasonable, since networks with low-dimensional embedding are more likely to benefit from our methods.
 
 \begin{figure*}
 \centering
@@ -128,13 +133,12 @@ The motivation behind this heuristic is leaving as many people as possible unvac
 \item \textsc{Random.} Find a connected cluster of size $k$ by doing a random walk on the auxiliary graph $\HR$.
 \end{enumerate}
 
-\subsection{Relation between criticality and underimmunization}
+\subsection{Relationship between criticality and underimmunization}
 \begin{figure}
 \centering
-\includegraphics[width=.35\textwidth]{img/criticality-schools-mn.pdf}
-\vspace{-.2in}
-\caption{Comparison of the distributions of the number of infections resulting from an
-outbreak starting in each of  four underimmunized clusters in MN identified in \cite{cadena:vacc-cluster}.}
+\includegraphics[width=.3\textwidth]{img/criticality-schools-mn.pdf}
+\vspace{-.15in}
+\caption{Comparison of the distributions of the number of infections resulting from an outbreak starting in each of four underimmunized clusters in MN identified in \cite{cadena:vacc-cluster}}
 \label{fig:criticality-compare}
 \end{figure}
 
@@ -142,10 +146,10 @@ We compute the criticality of the four most significant underimmunized clusters 
 The clusters are numbered 1--4 based on their significance, with respect to
 underimmunization rates, so that cluster 1 is more significant than cluster 4.
 However, as shown in Figure \ref{fig:criticality-compare},
-\emph{it seems clear that the outbreak-size of cluster 4 is much higher than
+\emph{it seems clear that the outbreak size of cluster 4 is much higher than
 that of cluster 1}---the 95th percentile value for the number of infections in
 cluster 4 is almost four times that of cluster 1. The results show that criticality is not directly 
-correlated with the level of underimmunization, or even vulnerability, as shown in Figure~\ref{fig:cri-baseline-compare}. Instead network structure plays a more important role in determining 
+correlated with the level of underimmunization, or even vulnerability, as shown in Figure~\ref{fig:cri-baseline-compare}. Instead, network structure plays a more important role in determining 
 the criticality. 
 
 \subsection{Optimization power}
@@ -172,7 +176,8 @@ We observe that even the largest outbreaks caused by \textsc{Vulnerability} and 
 \includegraphics[width=0.24\textwidth]{img/mn_criticality_cluster_boxplot.pdf}
 \includegraphics[width=0.24\textwidth]{img/mn_popsize_cluster_boxplot.pdf}
 \includegraphics[width=0.24\textwidth]{img/mn_avg_blkgrp_cluster_boxplot.pdf}
-\includegraphics[width=0.24\textwidth]{img/mn_random_blkgrp_cluster_boxplot.pdf}\\
+\includegraphics[width=0.24\textwidth]{img/mn_random_blkgrp_cluster_boxplot.pdf}
+\vspace{-.15in}
 \caption{Criticality scores over 100 runs of the disease model for each method evaluated}
 \label{fig:crit-boxplots}
 \end{figure*}
@@ -187,6 +192,7 @@ We compare the distribution of age and income in the cluster discovered by \algo
 \includegraphics[width=0.23\textwidth]{img/kmaxst-11-income.pdf}
 \includegraphics[width=0.23\textwidth]{img/mn-age.pdf}
 \includegraphics[width=0.23\textwidth]{img/kmaxst-11-age.pdf}
+\vspace{-.15in}
 \caption{Average income (top) and age (bottom) in the entire state (left) and in the cluster discovered by \algomaxcrit{} (right). There are more children in school age and lower income households in the discovered critical cluster.}
 \label{fig:cluster-demographics}
 \end{figure}
@@ -198,9 +204,9 @@ In addition to analyzing the most critical cluster, we look at the top-5 non-ove
 \begin{table}
 \centering
 \caption{Total population and criticality in the top 5 clusters discovered by \algomaxcrit{}
-%\vspace*{-.15in}
 }
 \label{tab:top5-scores}
+\vspace*{-.15in}
 \begin{tabular}{|c|r|r|r|}
 \hline
 \textbf{Rank} & \textbf{Population} & \textbf{Criticality} & \textbf{\% population}\\

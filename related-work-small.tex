@@ -1,7 +1,6 @@
 % !TEX root = ./main.tex
 \section{Related Work}
-Mathematical models have played an important role in epidemiology for over a century \cite{anderson+m:book}. Traditionally, epidemiological models have been differential equation models, which assume very simplistic mixing patterns of the underlying population. In the last decade, several research groups have developed agent based methods
-using complex networks as a way to model more realistic mixing
+Mathematical models have played an important role in epidemiology for over a century \cite{anderson+m:book}. Traditionally, epidemiological models have been differential equation models, which assume very simplistic mixing patterns of the underlying population. In the last decade, several research groups have developed agent based methods using complex networks as a way to model more realistic mixing
 \cite{eubank:nature04,longini05:science,fc+06,Liu2015}.
 Such methods have been used for policy analysis
 by local and national government agencies \cite{halloran:pnas08}.
@@ -14,12 +13,12 @@ significant clusters of under-immunization and vaccine refusal
 using spatial scan statistics. However, such methods are not directly useful for the
 question of identifying \emph{critical} clusters, which is our focus.
 
-There is a large body of work related to outbreak detection in networks. \cite{christakis:10:sensor} use the ``friend of random people'' effect to monitor a subset of people and infer characteristics of the  epidemic curve for the entire population. \cite{Leskovec@KDD07} study early detection of different kinds of events---e.g., in water networks or social networks. However, these approaches have been focused on either just detecting that some event (e.g., start of an infection) has occurred or the epidemic characteristics for the entire region. Instead, we are interested in finding regions that would lead to a big number of infections if left unvaccinated.
+There is a large body of work related to outbreak detection in networks. \cite{christakis:10:sensor} use the ``friend of random people'' effect to monitor a subset of people and infer characteristics of the epidemic curve for the entire population. \cite{Leskovec@KDD07} study early detection of different kinds of events---e.g., in social networks. However, these approaches have been focused on either just detecting that some event (e.g., start of an infection) has occurred or the epidemic characteristics for the entire region. Instead, we are interested in finding regions that would lead to a big number of infections if left unvaccinated.
 
 Our work is also related to influence maximization \cite{kempe:sigkdd03}, and more generally, 
-submodular function maximization \cite{Krause2014SubmodularFM}, but with a constraint of connectivity. Connectivity makes the problem much more difficult than other constraints, such as cardinality or matroid constraints, which can be approximately optimized using a simple greedy procedure \cite{nemhauser1978analysis}. 
+submodular function maximization \cite{Krause2014SubmodularFM}, but with a constraint of connectivity. Connectivity makes the problem much more difficult than other constraints, such as cardinality or matroid constraints, which can be approximately optimized using a greedy procedure \cite{nemhauser1978analysis}. 
 The most relevant work is by \cite{kuo2015maximizing}, who proposed a 
-$\Omega(1/\sqrt{k})$ approximation algorithm to this problem. As mentioned earlier, our algorithm \algosubmod{} improves on this bound. Finally,
+$\Omega(1/\sqrt{k})$ approximation algorithm. As mentioned earlier, our algorithm \algosubmod{} improves on this bound. Finally,
 \cite{krause2006near} proposes an approximation algorithm for budgeted 
 submodularity maximization on graphs based on exploiting local structure. 
 

@@ -17,8 +17,7 @@
 \emph{MaxCrit} is NP-hard.
 \end{theorem}
 
-We present the proof in the Supplementary Material. The main idea is to show that \maxcrit{} is equivalent to
-the classical Influence Maximization (\infmax) problem \cite{kempe:sigkdd03}. Briefly, in \infmax, we are given a directed graph, disease transmission probabilities for each edge, and a size constraint $k$. The goal is to find a \emph{seed set} of $k$ nodes to be the source of an infection, such that the number of infected nodes, following a given disease model, is maximized. 
+We omit the proof due to space. The main idea is to show that \maxcrit{} is equivalent to the Influence Maximization (\infmax) problem \cite{kempe:sigkdd03}. In \infmax, given a directed graph, disease transmission probabilities for each edge, and a size constraint $k$, the goal is to find a \emph{seed set} of $k$ nodes to be the source of an infection, such that the number of infected nodes, following a given disease model, is maximized. 
 While \maxcrit{} has a different objective, we show that it can be viewed as \infmax{} not on $G$ but as an expectation on a
 different graph in which all vaccinated nodes are removed with the corresponding probability,
 and a meta-node is added to ensure connectivity. 
@@ -41,8 +40,8 @@ For example, consider a cycle graph, as in Figure \ref{fig:observation}. Every n
 
 \begin{figure}
     \centering
-    \includegraphics[width=.5\columnwidth]{img/observation.png}
-    \caption{Effect of connectivity constraint in cycle graph with $k=4$ spreader nodes (blue) separated by paths of length $k + 1$. The optimal solution to $\infmax{}$ has $k$ times the objective value of the optimal solution for \maxcrit{}. See text for details.}
+    \includegraphics[width=.4\columnwidth]{img/observation.png}
+    \caption{Effect of connectivity constraint in cycle graph with $k=4$ spreader nodes separated by paths of length $k + 1$. The optimal solution to $\infmax{}$ has $k$ times the objective value of the optimal solution for \maxcrit{}. See text for details.}
     \label{fig:observation}
 \end{figure}
 
@@ -96,10 +95,10 @@ Now, consider two sets $S,T$, such that $T\subseteq S$, and a node $v \not \in S
 $$
 \crit(S) = \sum_{L}\text{Pr}(L) \crit_L(S).
 $$
-where $\text{Pr}(L)$ denotes the probability of obtaining the live graph $L$ with the edge probabilities $p(u,v)$. This is a convex combination of submodular functions, which is known to be submodular too, completing the proof.
+where $\text{Pr}(L)$ denotes the probability of obtaining the live graph $L$ with the edge probabilities $p(u,v)$. This is a convex combination of submodular functions, which is known to be submodular too.%, completing the proof.
 \end{proof}
 
-The \maxcrit{} problem can be seen as maximizing the submodular function $\crit(S)$ over all connected $S\in\ConnR$, with $|S|\leq k$. The connectivity constraint significantly increases the computational complexity of the problem. In contrast, the relaxed problem of maximizing a submodular function subject \emph{only} to a size constraint $k$ can be approximated to a constant factor. Given a submodular function $f(\cdot)$, the $\greedy{}$ algorithm of \cite{nemhauser1978analysis} finds a set $S$ with objective value at least $(1 - 1/e)$ of the optimal by iteratively adding a node $v$ to $S$ that maximizes the marginal benefit, $f(S\cup\{v\}) - f(S)$.
+The \maxcrit{} problem can be seen as maximizing the submodular function $\crit(S)$ over all connected $S\in\ConnR$, with $|S|\leq k$. The connectivity constraint significantly increases the computational complexity of the problem. In contrast, the relaxed problem of maximizing a submodular function subject \emph{only} to a size constraint $k$ can be approximated to a constant factor. Given a submodular function $f(\cdot)$, the $\greedy{}$ algorithm of \cite{nemhauser1978analysis} finds a set $S$ with objective value at least $(1 - 1/e)$ of the optimal by adding a node $v$ to $S$ that maximizes the marginal gain, $f(S\cup\{v\}) - f(S)$.
 For submodular maximization with connectivity constraints, Kuo et al.\ \cite{kuo2015maximizing} give an $\Omega(1/\sqrt{k})$ approximation guarantee. Below, we derive an improved algorithm by exploiting the geometric structure of the graph.
 
 \subsection{Algorithm \algosubmod{}}
@@ -143,7 +142,9 @@ Let $\HR$ be a graph with doubling dimension $d$.
 Consider any subset $S\subseteq B(r, \ell)$ for any $r\in\R$, $\ell\geq 0$.
 Then, there exists a steiner tree $T$ that spans $S$, such that $|T|=O\Big(\frac{\ell^d}{\hat{\ell}^{d-1}}+|S|\hat{\ell}\Big)$, for any $\hat{\ell}\leq\ell$.
 \end{lemma}
+
 \begin{proof} 
+\vspace{-.11in}
 We first observe that $B(r, \ell)$ can be covered by at most $O((\ell/\hat{\ell})^d)$ balls of radius $\hat{\ell}$. Let $\ell/\hat{\ell}=2^x$, and assume $x$ is an integer (the bound holds even if this is not the case). Since $\HR$ has doubling dimension, $B(v, \ell)$ can be covered by at most $2^d$ balls of radius $\ell/2$, $2^{2d}$ balls of radius $\ell/2^2$, and so on. Therefore, $B(r, \ell)$ can be covered by $2^{xd}=(\ell/\hat{\ell})^d$ balls of radius $\ell/2^x=\hat{\ell}$. Let $B(v_1,\hat{\ell}),\ldots,B(v_N,\hat{\ell})$ be the $N=O((\ell/\hat{\ell})^d)$ balls of radius $\hat{\ell}$ which cover $B(r, \ell)$.
 
 Next, consider a graph $\hat{H}=(\{v_1,\ldots,v_N\},\hat{E})$, where $(v_i, v_j)\in\hat{E}$ if there exist $u\in B(v_i, \hat{\ell})$ and $u'\in B(v_j, \hat{\ell})$ such that $u, u'$ are adjacent in $\HR$. Then, for each $(v_i, v_j)\in \hat{E}$, we have $\dist_{\hat{H}}(v_i, v_j)\leq 2\hat{\ell}$. 
@@ -188,7 +189,7 @@ $$
 \textbf{Approximation guarantee.} By combining Lemmas \ref{lemma:udg} and \ref{lemma:opt}, we obtain an improved approximation.
 \begin{theorem}
 \label{theorem:submod}
-Let $T(r, \ell)$ be the tree returned by Algorithm \algosubmod{}, and let $\HR$ have doubling dimension $d$. Then, for $\ell=k^{\frac{d}{2d-1}}$, $\crit(T(r, \ell))=\Omega\Big(\frac{1}{k^{(d-1)/(2d-1)}} \crit(S^*)\Big)$ and $T(r, \ell)$ has size at most $2k$.
+Let $T(r, \ell)$ be the tree returned by Algorithm \ref{alg:algosubmod}, and let $\HR$ have doubling dimension $d$. Then, for $\ell=k^{\frac{d}{2d-1}}$, $\crit(T(r, \ell))=\Omega\Big(\frac{1}{k^{(d-1)/(2d-1)}} \crit(S^*)\Big)$ and $T(r, \ell)$ has size at most $2k$.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:opt}, there exists a ball $B(r, \ell)$, such that $\crit(S^*\cap B(r, \ell))=\Omega(\frac{\ell}{k}\crit(S^*))$.
@@ -296,7 +297,7 @@ If $\HR$ has doubling dimension $d$, the above algorithm gives an $\Omega\Big(\f
 \end{theorem}
 
 \begin{proof}
-The approximation guarantee follows from Theorem \ref{theorem:submod}. The running time is simply the sum of the running times of \algomaxst{} above and  \algosubmod{} implemented with the sampling approach of \cite{borgs:soda14}. We provide details for the latter in the Supplementary Material.
+The approximation guarantee follows from Theorem \ref{theorem:submod}. The running time is simply the sum of the running times of \algomaxst{} above and  \algosubmod{} implemented with the sampling approach of \cite{borgs:soda14}. %We provide details for the latter in the Supplementary Material.
 \end{proof}
 %%\begin{proof} (Sketch)
 %%For simplicity, assume each block group is a square; the
